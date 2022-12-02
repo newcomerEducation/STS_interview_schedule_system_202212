@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<title></title>
+
+</link>
+
+<head>
+<meta charset="utf-8">
+<title>check</title>
+</head>
+
+<body>
+  <div class="container">
+    <h1>ユーザー情報詳細</h1>
+    <div th:object="${userData}">
+      <div class="row mx-md-n5">
+        <div class="col-2 pt-3 border bg-light">名前</div>
+        <div class="col pt-3 border">
+          <p th:text="*{name}"></p>
+        </div>
+      </div>
+      <div class="row mx-md-n5">
+        <div class="col-2 pt-3 border bg-light">住所</div>
+        <div class="col pt-3 border">
+          <p th:text="*{address}"></p>
+        </div>
+      </div>
+      <div class="row mx-md-n5">
+        <div class="col-2 pt-3 border bg-light">電話番号</div>
+        <div class="col pt-3 border">
+          <p th:text="*{phone}"></p>
+        </div>
+      </div>
+    </div>
+    <br />
+  </div>
+</body>
+</html>

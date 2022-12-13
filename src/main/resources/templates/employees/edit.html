@@ -1,38 +1,55 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+</dependency> 
 <title></title>
 
-</link>
 
 <head>
 <meta charset="utf-8">
 <title>check</title>
 </head>
-
+<link th:href="@{/css/add.css}" rel="styleSheet">
 <body>
-  <div class="container">
-    <h1>ユーザー情報詳細</h1>
-    <div th:object="${userData}">
-      <div class="row mx-md-n5">
-        <div class="col-2 pt-3 border bg-light">名前</div>
-        <div class="col pt-3 border">
-          <p th:text="*{name}"></p>
-        </div>
-      </div>
-      <div class="row mx-md-n5">
-        <div class="col-2 pt-3 border bg-light">住所</div>
-        <div class="col pt-3 border">
-          <p th:text="*{address}"></p>
-        </div>
-      </div>
-      <div class="row mx-md-n5">
-        <div class="col-2 pt-3 border bg-light">電話番号</div>
-        <div class="col pt-3 border">
-          <p th:text="*{phone}"></p>
-        </div>
-      </div>
-    </div>
-    <br />
-  </div>
+	<h2>社員を更新する</h2>
+ ID:<a th:text="${id}" ></a>の社員情報編集ページ
+
+<p>(パスワードは変更する場合のみ入力してください)</p>
+  
+ 
+  <!--  --><form th:action="@{/employees/update}" th:object="${EditList}"method="post" th:each="edit : ${EditList}">
+    <div class="box1"><p>ID：<input type="text" th:value="${id}" name="id" id="id"></p></div>
+  <p>社員番号：<input type="text" th:value="${edit.employee_code}" name="employee_code" id="employee_code"></p>
+  <p>氏名：<input type="text" th:value="${edit.employee_name}" name="employee_name" id="employee_name"></p>
+  <p>パスワード：<input type="text"  th:value="${edit.password}" name="password" id="password"></p>
+  <p>権限（0or１)<input type="text"  th:value="${edit.admin_flag}" name="admin_flag" id="admin_flag" ></p> 
+  <p>所属部署※後でプルダウン変更：<input type="text"  th:value="${edit.department_id}"  name="department_id" id="department_id"></p>
+  <p><input type="submit" value="更新"></p>
+  
+  
+  
+  
+  
+  
+  <!-- each文未使用Ver　変更用に残す。 <form th:action="@{/employees/update}" th:object="${EditList}"method="post">
+  <p>ID：<input type="text" th:value="${id}" name="id" id="id"></p>
+  <p>社員番号：<input type="text" th:value="${employee_code}" name="employee_code" id="employee_code"></p>
+  <p>氏名：<input type="text" th:value="${employee_name}" name="employee_name" id="employee_name"></p>
+  <p>パスワード：<input type="text"  th:value="${password}" name="password" id="password"></p>
+  <p>権限（0or１)<input type="text"  th:value="${admin_flag}" name="admin_flag" id="admin_flag" ></p> 
+  <p>所属部署※後でプルダウン変更：<input type="text"  th:value="${department_id}"  name="department_id" id="department_id"></p>
+  <p><input type="submit" value="更新"></p>-->
+</form>
+
+<div class="box1"><a th:text="${id}" ></a></div>
+
+<a th:text="削除"th:href="@{/employees/{id}/destroy(id=*{id})}" onclick="confirmDestroy();" ></a>
+ <script>
+                    function confirmDestroy() {
+                        if(confirm("本当に削除してよろしいですか？")) {
+                            document.forms[1].submit();
+                        }
+                    }
+                </script>
+
 </body>
 </html>

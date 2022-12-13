@@ -1,10 +1,8 @@
-/*プログラム名:　社員情報管理
-プログラム説明: Spring BootとJDBCでmysqlを更新し、社員情報（id,name,rubi,created_at,updated_at）を管理します
-このファイルの説明: MainController.javaはマッピングを司るcontroller部分です
-更新内容:統合版にオブジェクトで値を受け渡す機能を追加
-作成者: 赤坂
+/*プログラム名:　社員情報管理 
+このファイルの説明: マッピングを司るcontroller部分です.
+作成者: 福本
 作成日: 2022/11/16
-更新日:2022/11/22
+更新日:2022/12/13 
 */
 package com.example.demo.controller;
 
@@ -28,89 +26,66 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 public class EmployeeController {
-	
+
 	private final EmployeeService employeeService;
 	private final EmployeeRepository employeeRepository;
 	EmployeeForm employeeForm = new EmployeeForm();
-	
-	 /**
-	   * ユーザー情報詳細画面を表示
-	   * @param id 表示するユーザーID
-	   * @param model Model
-	   * @return ユーザー情報詳細画面
-	   */
-	
-	
-	
-	
-	
-	//@GetMapping("/new")
-//	public String disp1(Model model) {
-//		model.addAttribute("employeeForm", new EmployeeForm());
-//		return "employees/new";
-//	}
-//＜インサート＞
-	//@PostMapping」を付与すると画面からPOSTメソッドで送られてきた場合の処理ができる。
-	//引数には「new.html」のactionのフォームで設定したaction属性のパスを設定する			
-		@PostMapping("/inputAll")
-		public String disp2(EmployeeForm employeeForm) {
-			// 登録メソッド等呼び出し
-			employeeService.insertData(employeeForm);
-			// newにリダイレクト
-			return "redirect:/new";//
-		}
-		
-			
-//＜アップデート＞		
-	// @PostMapping」を付与すると画面からPOSTメソッドで送られてきた場合の処理ができる。引数には「index.html」のaction
-	// のフォームで設定したaction属性のパスを設定する	
-//		@PostMapping("/update")
-//		public String disp3(EmployeeForm employeeForm) {
-			// 登録メソッド等呼び出し
-//			employeeService.updateData(employeeForm);
-			// test1にリダイレクト
-//			return "redirect:/test1";
-//		}
-	
-	
-	// <全件取得　　社員情報管理画面　一覧　（index）>
-	@GetMapping("/test1") // URLがtest1の時うごく？
+
+//＜登録＞
+	@GetMapping("/employees/new")
+	// 初回アクセス時の画面を表示でフォームを紐付けています。
+	public String displayInsert(Model model) {
+		model.addAttribute("employeeForm", new EmployeeForm());
+		return "employees/new";
+	}
+
+	// @PostMapping」を付与すると画面からPOSTメソッドで送られてきた場合の処理ができる。
+	// 引数には「new.html」のactionのフォームで設定したaction属性のパスを設定する
+	@PostMapping("/inputAll")
+	public String insertUp(EmployeeForm employeeForm) {
+		// 登録メソッド等呼び出し
+		employeeService.insertData(employeeForm);
+		// newにリダイレクト
+		return "redirect:/employees/index";
+	}
+
+//<更新＞		
+	@GetMapping("/employees/{id}/edit")
+	public String displayEdit(@PathVariable Long id, Model model) {
+		List<EmployeeDto> edit = employeeRepository.findByIdEdit(id);
+		model.addAttribute("EditList", edit);
+		return "employees/edit";
+	}
+
+	@PostMapping("/employees/update")
+	public String editUp(EmployeeForm employeeForm) {
+		employeeService.updateData(employeeForm);
+		return "redirect:/employees/index";
+	}
+
+//<削除>	
+	@GetMapping("/employees/{id}/destroy")
+
+	public String displayViewDestroy(@PathVariable Long id, Model model) {
+		employeeRepository.findByIdDestroy(id);
+		return "redirect:/employees/index";
+	}
+
+//<一覧>
+	@GetMapping("/employees/index")
 	public String disp4(Model model) {
 		List<EmployeeDto> list = employeeRepository.getAll();
-		/*
-		 * model.addAttributeメソッドで画面に渡したいデータをModelオブジェクトに追加 【構文】
-		 * model.addAttribute("属性名", 渡したいデータ);
-		 */
 		model.addAttribute("EmployeeList", list);
-		return "employees/index"; // templatesの下のemployeesフォルダの中のindexを表示?
+		return "employees/index";
 	}
-		
-		
-	
-		//XXXXXXXXXXX仮　詳細コントローラー 詳細
-		@GetMapping("/test2") // URLがtest2の時うごく？//テスト用　変更するのわすれるな
-		public String disp5(Model model) {
-			List<EmployeeDto> list = employeeRepository.getAll();
-			/*
-			 * model.addAttributeメソッドで画面に渡したいデータをModelオブジェクトに追加 【構文】
-			 * model.addAttribute("属性名", 渡したいデータ);
-			*/ 
-			model.addAttribute("EmployeeList", list);
-			return "employees/edit"; // templatesの下のtest1フォルダの中のindex2を表示?
-			}
 
-		/**
-		   * ユーザー情報詳細画面を表示
-		   * @param id 表示するユーザーID
-		   * @param model Model
-		   * @return ユーザー情報詳細画面
-		   */
-		//  @GetMapping("/user/{id}")
-		//  public String displayView(@PathVariable Long id, Model model) {
-		  //  User user = userService.findById(id);
-		    //model.addAttribute("userData", user);
-		    //return "user/view";
-		  //}
-	
+//<詳細＞	
+	@GetMapping("/employees/{id}/show")
+
+	public String displayView(@PathVariable Long id, Model model) {
+		List<EmployeeDto> show = employeeRepository.findById(id);
+		model.addAttribute("ShowList", show);
+		return "employees/show";
+	}
 
 }

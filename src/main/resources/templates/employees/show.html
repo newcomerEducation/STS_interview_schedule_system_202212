@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<meta charset="utf-8">
+<title></title>
+<head>
+<title>社員情報管理・詳細画面</title>
 </head>
 <body>
+	<table>
+		<tr>
+			<th>社員番号</th>
+			<th>名前</th>
+			<th>所属部署※外部キー</th>
+			<th>権限</th>
+			<th>登録時間</th>
+			<th>更新時間</th>
+		</tr>
+		<tr th:each="show : ${ShowList}">
+			<td th:text="${show.employee_code}"></td>
+			<td th:text="${show.employee_name}"></td>
+			<td th:text="${show.department_id}"></td>
+			<td th:text="${show.admin_flag}"></td>
+			<td th:text="${show.created_at}"></td>
+			<td th:text="${show.updated_at}"></td>
+		
 
+		<p><a th:text="この社員情報を編集する"th:href="@{/employees/{id}/edit(id=*{show.id})}" ></a></p>
+		
+			
+			
+			
+	</table>
 </body>
 </html>

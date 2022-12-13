@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<title>ユーザー登録・更新・削除</title>
-<link href="/css/add.css" rel="stylesheet">
-</link>
+<title>社員情報管理、登録画面</title>
+
+
 
 <head>
 <meta charset="utf-8">
@@ -12,16 +12,18 @@
 <body>
 
 
-<form action="/inputAll" method="post">
+
 		<br> <br>
 		<h2>社員を新規で登録する</h2>
+		
+		
 		<form th:action="@{/inputAll}" th:object="${employeeForm}" method="post">
-			社員番号：<input type="text" th:field="*{employee_code}"><br>
-			氏名：<input type="text" th:field="*{employee_name}"><br>
-			パスワード：<input type="text" th:field="*{password}"><br>
-			権限：<input type="text" th:field="*{admin_flag}"><br>
-			所属部署：<input type="text" th:field="*{department_id}"><br>
-			<input type="submit" value="新規登録">
+			<p>社員番号：<input type="text" th:field="*{employee_code}"></p>
+			<p>氏名：<input type="text" th:field="*{employee_name}"></p>
+			<p>パスワード：<input type="text" th:field="*{password}"></p>
+			<p>権限：<input type="text" th:field="*{admin_flag}"></p>
+			<p>所属部署：<input type="text" th:field="*{department_id}"></p>
+			<p><input type="submit" value="新規登録">
 		</form>
 	
 

@@ -1,10 +1,8 @@
-/*プログラム名:　社員情報管理
-プログラム説明: Spring BootとJDBCでmysqlを更新し、社員情報（id,name,rubi,created_at,updated_at）を管理します
-このファイルの説明: MainController.javaはマッピングを司るcontroller部分です
-更新内容:統合版にオブジェクトで値を受け渡す機能を追加
-作成者: 赤坂
+/*プログラム名:　部署情報管理
+このファイルの説明:javaはマッピングを司るcontroller部分です
+作成者: 福本
 作成日: 2022/11/16
-更新日:2022/11/22
+更新日:2022/12/13
 */
 package com.example.demo.controller;
 

@@ -71,13 +71,13 @@ public class EmployeeController {
 		return "redirect:/employees/index";
 	}
 
-//<一覧>
-	@GetMapping("/employees/index")
-	public String disp4(Model model) {
-		List<EmployeeDto> list = employeeRepository.getAll();
-		model.addAttribute("EmployeeList", list);
-		return "employees/index";
-	}
+	//<一覧>
+		@GetMapping("/employees/index")
+		public String displayIndex(Model model) {
+			List<EmployeeDto> list = employeeRepository.getAll();
+			model.addAttribute("EmployeeList", list);
+			return "employees/index";
+		}
 
 //<詳細＞	
 	@GetMapping("/employees/{id}/show")

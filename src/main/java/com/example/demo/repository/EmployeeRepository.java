@@ -99,6 +99,8 @@ public class EmployeeRepository {
 
 	}
 
+
+
 //＜詳細表示＞
 	public List<EmployeeDto> findById(Long id) {
 		String sql = "SELECT id,admin_flag,created_at,employee_code,employee_name,is_deleted,password,updated_at,department_id"

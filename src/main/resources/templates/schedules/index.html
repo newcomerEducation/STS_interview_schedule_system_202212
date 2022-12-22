@@ -2,34 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<meta charset="utf-8">
-<title>check</title>
+	<meta charset="utf-8">
+	<title>面談予定管理システム</title>
 </head>
- <h2>社員 一覧</h2>
-<body >
 
 
+<body>
+	<!-- 登録完了メッセージを表示  -->
+	<th:block th:if="${flush != null}">
+		<div id="flush_success">
+			<p th:text="${flush}"></p>
+		</div>
+	</th:block>
+	<h2>面談予定 一覧</h2>
 
-<br>
-	<table>
-	      <tr>
-	        <th>社員番号</th>
-	        <th>名前</th>
-	        <th>部署番号</th>
-	        <th>操作</th>
-	      </tr>
-	      <tr th:each="list : ${EmployeeList}">
-	        <td th:text="${list.employee_code}"></td>
-	        <td th:text="${list.employee_name}"></td>
-	        <td th:text="${list.department_id}"></td>
-	         <td><div th:switch="${list.is_deleted}">
-    <span th:case=１ th:text="（削除済み）"></span>
-    <span th:case="*"><a th:href="@{/test2}">更新</a></span>
-  <!-- <a th:href="@{/input}">入力画面へ</a> <span th:case="*"><a th:href=”${‘file://’ + test3}” th:text=”${productName}”></a></span>
---></div></td>
-
-	      </tr>
-	      <div><a th:href="@{/new}">登録</a></div>
-	</table>
 </body>
+
 </html>

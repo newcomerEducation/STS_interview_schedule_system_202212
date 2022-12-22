@@ -1,3 +1,9 @@
+<!--  プログラム名:　社員情報管理 
+このファイルの説明:新規社員登録画面
+作成者: 福本
+作成日: 2022/11/16
+更新日:2022/12/22 -->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <title>社員情報管理、登録画面</title>
@@ -14,18 +20,23 @@
 
 
 		<br> <br>
-		<h2>社員を新規で登録する</h2>
+		<h2>社員情報　新規登録ページ</h2>
 		
 		
-		<form th:action="@{/inputAll}" th:object="${employeeForm}" method="post">
-			<p>社員番号：<input type="text" th:field="*{employee_code}"></p>
-			<p>氏名：<input type="text" th:field="*{employee_name}"></p>
-			<p>パスワード：<input type="text" th:field="*{password}"></p>
-			<p>権限：<input type="text" th:field="*{admin_flag}"></p>
-			<p>所属部署：<input type="text" th:field="*{department_id}"></p>
-			<p><input type="submit" value="新規登録">
-		</form>
-	
-
+		<form action="/inputAll" method="post">
+		社員番号：<input type="text" th:id="employee_code" th:name="employee_code" th:value="${employee_code}"><br>
+		氏名：<input type="text" th:id="employee_name" th:name="employee_name" th:value="${employee_name}"><br>
+		パスワード：<input type="text" th:id="password" th:name="password" th:value="${password}"><br>
+		権限：<input type="text" th:id="admin_flag" th:name="admin_flag" th:value=0><br>
+		所属部署：<select th:id="department_id" th:name="department_id">
+			<option th:each="list:${DepartmentList}" th:value="${list.id}" th:selected="${list.id == selectedValue}"
+				th:inline="text">
+				[[${list.department_code}]] : [[${list.department_name}]]
+			</option>
+		</select>
+		<br>
+		<input type="submit" value="新規登録">
+	</form>
+<br><a th:text="一覧に戻る"th:href="@{/employees/index/entrance}" ></a>
 </body>
 </html>

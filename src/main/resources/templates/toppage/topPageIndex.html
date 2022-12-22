@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<title>面談予定管理システム</title>
+</head>
+
+
+<body>
+<!-- ログインしました　というメッセージを表示 -->
+	<th:block th:if="${flush != null}">
+		<div id="flush_success">
+			<p th:text="${flush}"></p>
+		</div>
+	</th:block>
+
+	<h2>面談予定管理システムへようこそ</h2>
+	<h3>【自分の面談予定 一覧】</h3>
+
+<br><br><h3>現時点でヘッダーが無いため、以下に臨時で他システムに移動するリンクを作成</h3>
+	<p><a href="/employees/index/entrance" class="btn btn-secondary">社員管理(index.html)</a></p>
+	<p><a href="/departments/index" class="btn btn-secondary">部署管理(index.html)</a></p>
+	<p><a href="/schedules/index" class="btn btn-secondary">面談予定管理(index.html)</a></p>
+
+
+</body>
+
+</html>

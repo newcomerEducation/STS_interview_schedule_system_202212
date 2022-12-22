@@ -1,3 +1,9 @@
+<!--  
+プログラム名:　社員情報管理 
+このファイルの説明: 編集画面
+作成者: 福本
+作成日: 2022/11/16
+更新日:2022/12/22 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 </dependency> 
@@ -10,13 +16,13 @@
 </head>
 <link th:href="@{/css/add.css}" rel="styleSheet">
 <body>
-	<h2>社員を更新する</h2>
- ID:<a th:text="${id}" ></a>の社員情報編集ページ
+	
+ <h2>ID:<a th:text="${id}" ></a>の社員情報編集ページ</h2>
 
 <p>(パスワードは変更する場合のみ入力してください)</p>
   
  
-  <!--  --><form th:action="@{/employees/update}" th:object="${EditList}"method="post" th:each="edit : ${EditList}">
+  <form th:action="@{/employees/update}" th:object="${EditList}"method="post" th:each="edit : ${EditList}">
     <div class="box1"><p>ID：<input type="text" th:value="${id}" name="id" id="id"></p></div>
   <p>社員番号：<input type="text" th:value="${edit.employee_code}" name="employee_code" id="employee_code"></p>
   <p>氏名：<input type="text" th:value="${edit.employee_name}" name="employee_name" id="employee_name"></p>
@@ -24,20 +30,10 @@
   <p>権限（0or１)<input type="text"  th:value="${edit.admin_flag}" name="admin_flag" id="admin_flag" ></p> 
   <p>所属部署※後でプルダウン変更：<input type="text"  th:value="${edit.department_id}"  name="department_id" id="department_id"></p>
   <p><input type="submit" value="更新"></p>
-  
-  
-  
-  
-  
-  
-  <!-- each文未使用Ver　変更用に残す。 <form th:action="@{/employees/update}" th:object="${EditList}"method="post">
-  <p>ID：<input type="text" th:value="${id}" name="id" id="id"></p>
-  <p>社員番号：<input type="text" th:value="${employee_code}" name="employee_code" id="employee_code"></p>
-  <p>氏名：<input type="text" th:value="${employee_name}" name="employee_name" id="employee_name"></p>
-  <p>パスワード：<input type="text"  th:value="${password}" name="password" id="password"></p>
-  <p>権限（0or１)<input type="text"  th:value="${admin_flag}" name="admin_flag" id="admin_flag" ></p> 
-  <p>所属部署※後でプルダウン変更：<input type="text"  th:value="${department_id}"  name="department_id" id="department_id"></p>
-  <p><input type="submit" value="更新"></p>-->
+   <!--※パスワード（未実装機能）　
+   　・パスワードの初期値は表示しない（セキュリティ上）。　
+　　　　・空欄で入力された場合はパスワードを変更しない、値を入力された場合パスワードを更新するように、条件分岐させる。
+　　　-->
 </form>
 
 <div class="box1"><a th:text="${id}" ></a></div>
@@ -50,6 +46,6 @@
                         }
                     }
                 </script>
-
+<br><a th:text="一覧に戻る"th:href="@{/employees/index/entrance}" ></a>
 </body>
 </html>

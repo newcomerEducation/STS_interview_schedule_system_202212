@@ -1,29 +1,249 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<title>ユーザー登録・更新・削除</title>
-<link href="/css/add.css" rel="stylesheet">
-</link>
+
+
+
 
 <head>
-<meta charset="utf-8">
-<title>check</title>
+	<meta charset="utf-8">
+	<title>面談予定管理システム</title>
 </head>
 
 <body>
 
+	<table>
+		<div th:if="${errors !=null}">
+			<div id="flush_error">
+				入力内容にエラーがあります。
+				<div th:each="error : ${errors}">
+					<tr>
+						<td th:text="${error}"></td>
+					</tr>
+				</div>
+			</div>
+		</div>
+	</table>
 
-<form action="/inputAll" method="post">
-		<br> <br>
-		<h2>社員を新規で登録する</h2>
-		<form th:action="@{/inputAll}" th:object="${employeeForm}" method="post">
-			社員番号：<input type="text" th:field="*{employee_code}"><br>
-			氏名：<input type="text" th:field="*{employee_name}"><br>
-			パスワード：<input type="text" th:field="*{password}"><br>
-			権限：<input type="text" th:field="*{admin_flag}"><br>
-			所属部署：<input type="text" th:field="*{department_id}"><br>
-			<input type="submit" value="新規登録">
-		</form>
+	<!-- 登録フォーム  -->
+	<h2>面談予定 新規登録ページ</h2>
+	<form th:action="@{/createSchedules}" th:method="POST">
+
+		<label for="project_title">案件名</label><br />
+		<input type="text" th:id="project_title" th:name="project_title" th:value="${scheduleForm.project_title}">
+		<!-- th:if scheduleForm.project_title==NULL -->
+		<br /><br />
+
+		<label for="place">場所</label><br />
+		<input type="text" th:id="place" th:name="place" th:value="${scheduleForm.place}" />
+		<br /><br />
+
+		<label for="vendor">ベンダー</label><br />
+		<input type="text" th:id="vendor" th:name="vendor" th:value="${scheduleForm.vendor}" />
+		<br /><br />
+
+		<label for="ordering_company">上位会社（発注元企業）</label><br />
+		<input type="text" th:id="ordering_company" th:name="ordering_company"
+			th:value="${scheduleForm.ordering_company}" />
+		<br /><br />
+		
+
+		<!-- 担当営業が入力されていない場合以下が表示-->
+		<th:block th:if="${NULL == scheduleForm.sales_employee_id}">
+			<label for="sales_employee_id">担当営業</label><br />
+			<select th:id="sales_employee_id" th:name="sales_employee_id">
+				<!-- th:selectedの条件１-->
+				<option th:each="sales_employee : ${salesList}" th:value="${sales_employee.id}"
+					th:selected="${sales_employee.id == sales_employee.id}" th:inline="text">
+					[[${sales_employee.employee_code}]] : [[${sales_employee.employee_name}]]
+				</option>
+			</select>
+		</th:block>
+		<br /><br />
+
+		<!-- 担当営業が入力されていた場合以下が表示-->
+		<th:block th:if="!(${NULL == scheduleForm.sales_employee_id})">
+			<!-- 条件がtrueなら表示される-->
+			<label for="sales_employee_id">担当営業</label><br />
+			<select th:id="sales_employee_id" th:name="sales_employee_id">
+				<!-- th:selectedの条件2(入力値保持)-->
+				<option th:each="sales_employee : ${salesList}" th:value="${sales_employee.id}"
+					th:selected="${sales_employee.id == scheduleForm.sales_employee_id}" th:inline="text">
+					[[${sales_employee.employee_code}]] : [[${sales_employee.employee_name}]]
+				</option>
+			</select>
+		</th:block>
+		<br /><br />
+
+
+		<label for="introduce_date">紹介日</label><br />
+		<input type="date" th:id="introduce_date" th:name="introduce_date" th:value="${scheduleForm.introduce_date}" />
+		<br /><br />
+
+
+		<label for="project_overview">案件概要</label><br />
+		<textarea th:id="project_overview" th:name="project_overview" th:value="${scheduleForm.project_overview}"
+			rows="10" cols="50">[[${scheduleForm.project_overview}]]</textarea>
+		<br /><br />
+
+		<label for="number_of_interviews">予定面談回数</label><br />
+		<input type="number" min="0" max="5" th:id="number_of_interviews" th:name="number_of_interviews"
+			th:value="${scheduleForm.number_of_interviews}" />
+		<br /><br />
+
+		<label for="priority">優先順位</label><br />
+		<input type="number" min="1" max="20" th:id="priority" th:name="priority" th:value="${scheduleForm.priority}" />
+		<br /><br />
+		<!-- if ${scheduleForm.priority}== "" 1みたいな感じで未入力の場合1を初期値にする　-->
+
+		<label for="aspiration_situation">志望状況</label><br />
+		<select th:id="aspiration_situation" th:name="aspiration_situation"
+			th:value="${scheduleForm.aspiration_situation}">
+			<option value="0"></option>
+			<option value="1" th:selected="${scheduleForm.aspiration_situation == 1}">志望する</option>
+			<option value="2" th:selected="${scheduleForm.aspiration_situation == 2}">志望しない</option>
+		</select>
+		<br /><br />
+
+		<label for="interview_situation">面談状況</label><br />
+		<select th:id="interview_situation" th:name="interview_situation"
+			th:value="${scheduleForm.interview_situation}">
+			<option value="0"></option>
+			<option value="1" th:selected="${scheduleForm.interview_situation == 1}">開始前</option>
+			<option value="2" th:selected="${scheduleForm.interview_situation == 2}">一次面談実施済</option>
+			<option value="3" th:selected="${scheduleForm.interview_situation == 3}">二次面談実施済</option>
+		</select>
+		<br /><br />
+		<label for="pass_fail_status">合否状況</label><br />
+		<select th:id="pass_fail_status" th:name="pass_fail_status" th:value="${scheduleForm.pass_fail_status}">
+			<option value="0"></option>
+			<option value="1" th:selected="${scheduleForm.pass_fail_status == 1}">合格</option>
+			<option value="2" th:selected="${scheduleForm.pass_fail_status == 2}">不合格</option>
+		</select>
+		<br /><br />
+
+
+		<label for="first_interview_scheduled_date">一次面談予定日</label><br />
+		<input type="date" th:id="first_interview_scheduled_date" th:name="first_interview_scheduled_date"
+			th:value="${scheduleForm.first_interview_scheduled_date}" />
+		<br /><br />
+
+
+		<label for="first_interview_scheduled_time">一次面談予定時間</label><br />
+		<input type="time" th:id="first_interview_scheduled_time" th:name="first_interview_scheduled_time"
+			th:value="${scheduleForm.first_interview_scheduled_time}" />
+		<br /><br />
+
+
+		<label for="first_interview_format">一次面談形式</label><br />
+		<select th:id="first_interview_format" th:name="first_interview_format"
+			th:value="${scheduleForm.first_interview_format}">
+			<option value="0"></option>
+			<option value="1" th:selected="${scheduleForm.first_interview_format == 1}">対面</option>
+			<option value="2" th:selected="${scheduleForm.first_interview_format == 2}">オンライン</option>
+		</select>
+		<br /><br />
+
+		<label for="first_interview_tool">一次面談ツール</label><br />
+		<input type="text" th:id="first_interview_tool" th:name="first_interview_tool"
+			th:value="${scheduleForm.first_interview_tool}" />
+		<br /><br />
+
+		<label for="first_interview_url">一次面談URL</label><br />
+		<input type="text" th:id="first_interview_url" th:name="first_interview_url"
+			th:value="${scheduleForm.first_interview_url}" />
+		<br /><br />
+
+		<label for="first_interview_id">一次面談ID</label><br />
+		<input type="text" th:id="first_interview_id" th:name="first_interview_id"
+			th:value="${scheduleForm.first_interview_id}" />
+		<br /><br />
+
+		<label for="first_interview_password">一次面談パスワード</label><br />
+		<input type="text" th:id="first_interview_password" th:name="first_interview_password"
+			th:value="${scheduleForm.first_interview_password}" />
+		<br /><br />
+
+
+		<label for="first_interview_date">一次面談実施日</label><br />
+		<input type="date" th:id="first_interview_date" th:name="first_interview_date"
+			th:value="${scheduleForm.first_interview_date}" />
+		<br /><br />
+
+
+
+		<label for="first_interview_time">一次面談実施時間</label><br />
+		<input type="time" th:id="first_interview_time" th:name="first_interview_time"
+			th:value="${scheduleForm.first_interview_time}" />
+		<br /><br />
+
+		<label for="second_interview_scheduled_date">二次面談予定日</label><br />
+		<input type="date" th:id="second_interview_scheduled_date" th:name="second_interview_scheduled_date"
+			th:value="${scheduleForm.second_interview_scheduled_date}" />
+		<br /><br />
+
+
+		<label for="second_interview_scheduled_time">二次面談予定時間</label><br />
+		<input type="time" th:id="second_interview_scheduled_time" th:name="second_interview_scheduled_time"
+			th:value="${scheduleForm.second_interview_scheduled_time}" />
+		<br /><br />
+
+
+		<label for="second_interview_format">二次面談形式</label><br />
+		<select th:id="second_interview_format" th:name="second_interview_format"
+			th:value="${scheduleForm.second_interview_format}">
+			<option value="0"></option>
+			<option value="1" th:selected="${scheduleForm.second_interview_format == 1}">対面</option>
+			<option value="2" th:selected="${scheduleForm.second_interview_format == 2}">オンライン</option>
+		</select>
+		<br /><br />
+
+		<label for="second_interview_tool">二次面談ツール</label><br />
+		<input type="text" th:id="second_interview_tool" th:name="second_interview_tool"
+			th:value="${scheduleForm.second_interview_tool}" />
+		<br /><br />
+
+		<label for="second_interview_url">二次面談URL</label><br />
+		<input type="text" th:id="second_interview_url" th:name="second_interview_url"
+			th:value="${scheduleForm.second_interview_url}" />
+		<br /><br />
+
+		<label for="second_interview_id">二次面談ID</label><br />
+		<input type="text" th:id="second_interview_id" th:name="second_interview_id"
+			th:value="${scheduleForm.second_interview_id}" />
+		<br /><br />
+
+		<label for="second_interview_password">二次面談パスワード</label><br />
+		<input type="text" th:id="second_interview_password" th:name="second_interview_password"
+			th:value="${scheduleForm.second_interview_password}" />
+		<br /><br />
+
+
+		<label for="second_interview_date">二次面談実施日</label><br />
+		<input type="date" th:id="second_interview_date" th:name="second_interview_date"
+			th:value="${scheduleForm.second_interview_date}" />
+		<br /><br />
+
+
+		<label for="second_interview_time">二次面談実施時間</label><br />
+		<input type="time" th:id="second_interview_time" th:name="second_interview_time"
+			th:value="${scheduleForm.second_interview_time}" />
+		<br /><br />
+
+		<label for="supplement">補足</label><br />
+		<textarea th:id="supplement" th:name="supplement" th:value="${scheduleForm.supplement}" rows="10" cols="50">[[${scheduleForm.supplement}]]</textarea>
+		<br /><br />
+
+
+		<!--
+	<input type="hidden" th:field="*{_token}" />
+!-->
+		<button type="submit">登録</button>
+
+	</form>
+	<p><a href="/schedules/index" class="btn btn-secondary">一覧に戻る</a></p>
+	
 	
 
 </body>
+
 </html>

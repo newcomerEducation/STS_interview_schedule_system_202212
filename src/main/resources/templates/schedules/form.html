@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<!-- フラグメントしてnew.htmlやedit.htmlで使用する予定だったが、中谷部長がformを共通化しないことを決定したので、このファイルは使用しない -->
+
+<body>
+
+	<!-- 登録フォーム　!-->
+	<!-- フラグメント名は form-fragment -->
+	<div th:fragment="formFragment">
+
+
+
+		<label for="project_title">案件名</label><br />
+		<input type="text"  th:id="project_title" th:name="project_title" th:value="${project_title}">
+		<br /><br />
+
+		<label for="place">場所</label><br />
+		<input type="text" th:id="place" th:name="place" th:value="${place}"  />
+		<br /><br />
+
+		<label for="vendor">ベンダー</label><br />
+		<input type="text" th:id="vendor" th:name="vendor" th:value="${vendor}" />
+		<br /><br />
+
+		<label for="ordering_company">上位会社（発注元企業）</label><br />
+		<input type="text" th:id="ordering_company" th:name="ordering_company" th:value="${ordering_company}" />
+		<br /><br />
+
+		<!-- 
+<label for="sales_employee_id">担当営業</label><br />
+<select name="sales_employee_id">
+    <c:forEach var="sales_employee" items="${employees}">
+        <option value="${sales_employee.id}"<c:if test="${sales_employee.id == schedule.sales_employee.id}"> selected</c:if>>
+        ${sales_employee.employee_code} : ${sales_employee.employee_name}</option>
+    </c:forEach>
+</select>
+<br /><br />
+!-->
+
+		<label for="introduce_date_date">紹介日</label><br />
+		<input type="date" th:id="introduce_date" th:name="introduce_date" th:value="${introduce_date}"/>
+		<br /><br />
+
+
+		<label for="project_overview">案件概要</label><br />
+		<textarea  th:id="project_overview" th:name="project_overview" th:value="${project_overview}" rows="10" cols="50"></textarea>
+		<br /><br />
+
+		<label for="number_of_interviews">予定面談回数</label><br />
+		<input type="number" min="0" max="5" th:id="number_of_interviews" th:name="number_of_interviews" th:value="${number_of_interviews}" />
+		<br /><br />
+
+		<label for="priority">優先順位</label><br />
+		<input type="number" min="1" max="20" th:id="priority" th:name="priority" th:value="${priority}" />
+		<br /><br />
+
+		!!!
+		<label for="aspiration_situation">志望状況</label><br />
+		<select th:id="aspiration_situation" th:name="aspiration_situation" th:value="${aspiration_situation}">
+			<option value="0"></option>
+			<option value="1">志望する</option>
+			<option value="2">志望しない</option>
+			<!-- 
+    <option value=""<c:if test="${empty schedule.aspiration_situation}"> selected</c:if>></option>
+    <option value="1"<c:if test="${schedule.aspiration_situation == 1}"> selected</c:if>>志望する</option>
+    <option value="2"<c:if test="${schedule.aspiration_situation == 2}"> selected</c:if>>志望しない</option>
+    !-->
+		</select>
+		<br /><br />
+
+		!!!
+		<label for="interview_situation">面談状況</label><br />
+		<select th:id="interview_situation" th:name="interview_situation" th:value="${interview_situation}">
+			<option value="0"></option>
+			<option value="1">開始前</option>
+			<option value="2">一次面談実施済</option>
+			<option value="3">二次面談実施済</option>
+			<!-- 
+    <option value=""<c:if test="${empty schedule.interview_situation}"> selected</c:if>></option>
+    <option value="1"<c:if test="${schedule.interview_situation == 1}"> selected</c:if>>開始前</option>
+    <option value="2"<c:if test="${schedule.interview_situation == 2}"> selected</c:if>>一次面談実施済</option>
+    <option value="3"<c:if test="${schedule.interview_situation == 3}"> selected</c:if>>二次面談実施済</option>
+ !-->
+		</select>
+		<br /><br />
+
+		!!!
+		<label for="pass_fail_status">合否状況</label><br />
+		<select th:id="pass_fail_status" th:name="pass_fail_status" th:value="${pass_fail_status}">
+			<option value="0"></option>
+			<option value="1">合格</option>
+			<option value="2">不合格</option>
+			<!-- 
+    <option value=""<c:if test="${empty schedule.pass_fail_status}"> selected</c:if>></option>
+    <option value="1"<c:if test="${schedule.pass_fail_status == 1}"> selected</c:if>>合格</option>
+    <option value="2"<c:if test="${schedule.pass_fail_status == 2}"> selected</c:if>>不合格</option>
+ !-->
+		</select>
+		<br /><br />
+
+
+		<label for="first_interview_scheduled_date">一次面談予定日</label><br />
+		<input type="date" th:id="first_interview_scheduled_date" th:name="first_interview_scheduled_date" th:value="${first_interview_scheduled_date}" />
+		<br /><br />
+
+		
+		<label for="first_interview_scheduled_time">一次面談予定時間</label><br />
+		<input type="time" th:id="first_interview_scheduled_time" th:name="first_interview_scheduled_time" th:value="${first_interview_scheduled_time}" />
+		<br /><br />
+
+		!!!
+		<label for="first_interview_format">一次面談形式</label><br />
+		<select th:id="first_interview_format" th:name="first_interview_format" th:value="${first_interview_format}" >
+			<option value="0"></option>
+			<option value="1">対面</option>
+			<option value="2">オンライン</option>
+			<!--
+    <option value=""<c:if test="${empty schedule.first_interview_format}"> selected</c:if>></option>
+    <option value="1"<c:if test="${schedule.first_interview_format == 1}"> selected</c:if>>対面</option>
+    <option value="2"<c:if test="${schedule.first_interview_format == 2}"> selected</c:if>>オンライン</option>
+ !-->
+		</select>
+		<br /><br />
+
+		<label for="first_interview_tool">一次面談ツール</label><br />
+		<input type="text" th:id="first_interview_tool" th:name="first_interview_tool" th:value="${first_interview_tool}" />
+		<br /><br />
+
+		<label for="first_interview_url">一次面談URL</label><br />
+		<input type="text" th:id="first_interview_url" th:name="first_interview_url" th:value="${first_interview_url}" />
+		<br /><br />
+
+		<label for="first_interview_id">一次面談ID</label><br />
+		<input type="text" th:id="first_interview_id" th:name="first_interview_id" th:value="${first_interview_id}" />
+		<br /><br />
+
+		<label for="first_interview_password">一次面談パスワード</label><br />
+		<input type="text" th:id="first_interview_password" th:name="first_interview_password" th:value="${first_interview_password}" />
+		<br /><br />
+
+
+		<label for="first_interview_date">一次面談実施日</label><br />
+		<input type="date" th:id="first_interview_date" th:name="first_interview_date" th:value="${first_interview_date}" />
+		<br /><br />
+
+		
+	
+		<label for="first_interview_time">一次面談実施時間</label><br />
+		<input type="time" th:id="first_interview_time" th:name="first_interview_time" th:value="${first_interview_time}" />
+		<br /><br />
+
+		<label for="second_interview_scheduled_date">二次面談予定日</label><br />
+		<input type="date" th:id="second_interview_scheduled_date" th:name="second_interview_scheduled_date" th:value="${second_interview_scheduled_date}" />
+		<br /><br />
+
+		
+		<label for="second_interview_scheduled_time">二次面談予定時間</label><br />
+		<input type="time" th:id="second_interview_scheduled_time" th:name="second_interview_scheduled_time" th:value="${second_interview_scheduled_time}" />
+		<br /><br />
+
+		!!!
+		<label for="second_interview_format">二次面談形式</label><br />
+		<select th:id="second_interview_format" th:name="second_interview_format" th:value="${second_interview_format}" >
+			<option value="0"></option>
+			<option value="1">対面</option>
+			<option value="2">オンライン</option>
+
+			<!--
+    <option value=""<c:if test="${empty schedule.second_interview_format}"> selected</c:if>></option>
+    <option value="1"<c:if test="${schedule.second_interview_format == 1}"> selected</c:if>>対面</option>
+    <option value="2"<c:if test="${schedule.second_interview_format == 2}"> selected</c:if>>オンライン</option>
+!-->
+		</select>
+		<br /><br />
+
+		<label for="second_interview_tool">二次面談ツール</label><br />
+		<input type="text" th:id="second_interview_tool" th:name="second_interview_tool" th:value="${second_interview_tool}" />
+		<br /><br />
+
+		<label for="second_interview_url">二次面談URL</label><br />
+		<input type="text" th:id="second_interview_url" th:name="second_interview_url" th:value="${second_interview_url}" />
+		<br /><br />
+
+		<label for="second_interview_id">二次面談ID</label><br />
+		<input type="text" th:id="second_interview_id" th:name="second_interview_id" th:value="${second_interview_id}" />
+		<br /><br />
+
+		<label for="second_interview_password">二次面談パスワード</label><br />
+		<input type="text" th:id="second_interview_password" th:name="second_interview_password" th:value="${second_interview_password}" />
+		<br /><br />
+
+
+		<label for="second_interview_date">二次面談実施日</label><br />
+		<input type="date" th:id="second_interview_date" th:name="second_interview_date" th:value="${second_interview_date}" />
+		<br /><br />
+
+		
+		<label for="second_interview_time">二次面談実施時間</label><br />
+		<input type="time" th:id="second_interview_time" th:name="second_interview_time" th:value="${second_interview_time}" />
+		<br /><br />
+
+		<label for="supplement">補足</label><br />
+		<textarea th:id="supplement" th:name="supplement" th:value="${supplement}" rows="10" cols="50"></textarea>
+		<br /><br />
+		<!--
+	<input type="hidden" th:field="*{_token}" />
+!-->
+		<button type="submit">登録</button>
+
+
+	</div>
+
+
+
+</body>
+
+</html>

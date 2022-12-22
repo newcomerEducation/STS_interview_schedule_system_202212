@@ -1,3 +1,8 @@
+<!--  プログラム名:　社員情報管理 
+このファイルの説明: 一覧表示フロント
+作成者: 福本
+作成日: 2022/11/16
+更新日:2022/12/22 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
@@ -5,37 +10,51 @@
 <meta charset="utf-8">
 <title>check</title>
 </head>
+<link th:href="@{/css/add.css}" rel="styleSheet">
 <h2>社員 一覧</h2>
 <body>
-
-
-
-	<br>
 	<table>
 		<tr>
-			<th>ID</th>
+			<div class="box1">
+			<th>ID</th>　　　　　
+			</div>
 			<th>社員番号</th>
 			<th>名前</th>
-			<th>部署番号</th>
+			<th>部署</th>
 			<th>操作</th>
 		</tr>
 		<tr th:each="list : ${EmployeeList}">
+			<div class="box1">
 			<td th:text="${list.id}"></td>
+			</div>
 			<td th:text="${list.employee_code}"></td>
 			<td th:text="${list.employee_name}"></td>
-			<td th:text="${list.department_id}"></td>
-			<td><div th:switch="${list.is_deleted}">
+			<td th:inline="text">[[${list.department_code}]]:[[${list.department_name}]]</td>
+			<td>
+				<div th:switch="${list.is_deleted}">
 					<span th:case=１ th:text="（削除済み）"></span> <span th:case="*"><a
-						th:href="@{/employees/{id}/show(id=*{list.id})}">詳細</a>ｓ</span>
-					<!--  idの値をURLに格納＆移動？-->
-					<!-- <a th:href="@{/input}">入力画面へ</a> <span th:case="*"><a th:href=”${‘file://’ + test3}” th:text=”${productName}”></a></span>
--->
-				</div></td>
+						th:href="@{/employees/{id}/show(id=*{list.id})}">詳細を表示</a></span>
 
+
+				</div>
+			</td>
 		</tr>
-		<div>
-			<a th:href="@{/employees/new}">登録</a>
-		</div>
 	</table>
+	<div id="pagination"><!--ページング-->
+		（全<a th:text="${TotalRecord}"></a>件）<br> 
+		<!--ページング機能 -->
+		 <span th:each="i : ${#numbers.sequence(1,TotalPage)}">
+			<th:block th:if="${i == Page}">
+            <a th:text="${i}"></a>
+            </th:block>
+			<th:block th:if="${i != Page}">
+            <a th:href="@{'/employees/index?page=' + ${i}}" th:text="${i}"></a>
+            </th:block>
+		 </span>
+	</div><br>
+	<div>
+			<a th:href="@{/employees/new}">新規社員情報の登録</a>
+		</div>
+
 </body>
 </html>

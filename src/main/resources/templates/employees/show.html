@@ -1,3 +1,8 @@
+<!--  プログラム名:　社員情報管理 
+このファイルの説明:詳細画面
+作成者: 福本
+作成日: 2022/11/16
+更新日:2022/12/１6 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -7,11 +12,12 @@
 <title>社員情報管理・詳細画面</title>
 </head>
 <body>
+ <h2>ID:<a th:text="${id}" ></a>の社員情報詳細ページ</h2>
 	<table>
 		<tr>
 			<th>社員番号</th>
 			<th>名前</th>
-			<th>所属部署※外部キー</th>
+			<th>所属部署</th>
 			<th>権限</th>
 			<th>登録時間</th>
 			<th>更新時間</th>
@@ -19,17 +25,16 @@
 		<tr th:each="show : ${ShowList}">
 			<td th:text="${show.employee_code}"></td>
 			<td th:text="${show.employee_name}"></td>
-			<td th:text="${show.department_id}"></td>
+			<td th:inline="text">[[${show.department_code}]]:[[${show.department_name}]]</td>
 			<td th:text="${show.admin_flag}"></td>
 			<td th:text="${show.created_at}"></td>
 			<td th:text="${show.updated_at}"></td>
 		
-
-		<p><a th:text="この社員情報を編集する"th:href="@{/employees/{id}/edit(id=*{show.id})}" ></a></p>
-		
-			
-			
+			</tr>
 			
 	</table>
+	<div th:each="show : ${ShowList}">
+	  <a th:text="この社員情報を編集する"th:href="@{/employees/{id}/edit(id=*{show.id})}" ></a></div>
+		<br><a th:text="一覧に戻る"th:href="@{/employees/index/entrance}" ></a>
 </body>
 </html>

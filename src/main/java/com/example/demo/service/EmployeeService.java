@@ -3,7 +3,7 @@
 このファイルの説明: Dtoクラスへ値を格納
 作成者: 福本
 作成日: 2022/11/16
-更新日: 2022/12/13
+更新日: 2022/12/20
 */
 package com.example.demo.service;
 
@@ -36,8 +36,6 @@ public class EmployeeService {
 		LocalDateTime dateTimeNow = LocalDateTime.now();
 		// パスワードハッシュ化　インスタンス化部分
 		String pass_hash = EncryptUtil.getPasswordEncrypt(eform.getPassword(), "null");
-		
-		
 		employeeList.add(new EmployeeDto(eform.getId(), eform.getAdmin_flag(), dateTimeNow, eform.getEmployee_code(),
 				eform.getEmployee_name(), eform.getIs_deleted(), pass_hash, dateTimeNow, eform.getDepartment_id()));
 		employeeRepository.insertEmployee(employeeList); 
@@ -47,8 +45,9 @@ public class EmployeeService {
 	public void updateData(EmployeeForm eform) {
 		List<EmployeeDto> employeeList = new ArrayList<>();
 		LocalDateTime dateTimeNow = LocalDateTime.now();
+		String pass_hash = EncryptUtil.getPasswordEncrypt(eform.getPassword(), "null");
 		employeeList.add(new EmployeeDto(eform.getId(), eform.getAdmin_flag(), eform.getCreated_at(),
-				eform.getEmployee_code(), eform.getEmployee_name(), eform.getIs_deleted(), eform.getPassword(),
+				eform.getEmployee_code(), eform.getEmployee_name(), eform.getIs_deleted(), pass_hash,
 				dateTimeNow, eform.getDepartment_id()));
 		employeeRepository.updateEmployee(employeeList); 
 		

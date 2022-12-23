@@ -31,6 +31,7 @@ public class ScheduleRepository {
 	// 等のリソースの取得・破棄といった実際のロジックとは関係のない処理を行う必要がなくなります。
 	private final JdbcTemplate jdbcTemplate; // jdbcTempleteはCRUDのメソッドを内臓しているため楽にSQLを読ませることができるようになる?
 
+	//employee_idをデフォルトで1を入れるようにする（暫定）
 	public void insertSchedule(List<ScheduleDto> scheduleList) {
 		for (ScheduleDto schedule : scheduleList) {
 			jdbcTemplate.update("INSERT INTO schedules"
@@ -49,7 +50,8 @@ public class ScheduleRepository {
 					schedule.getSecond_interview_password(), schedule.getSecond_interview_scheduled_date(),
 					schedule.getSecond_interview_scheduled_time(), schedule.getSecond_interview_time(),
 					schedule.getSecond_interview_tool(), schedule.getSecond_interview_url(), schedule.getSupplement(),
-					schedule.getUpdated_at(), schedule.getVendor(), schedule.getEmployee(),
+					schedule.getUpdated_at(), schedule.getVendor(), //schedule.getEmployee(),
+					1,
 					schedule.getSales_employee_id());
 
 		}

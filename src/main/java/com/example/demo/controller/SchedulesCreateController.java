@@ -30,7 +30,6 @@ import com.example.demo.service.ScheduleService;
 
 import lombok.RequiredArgsConstructor;
 
-
 @Controller
 @RequiredArgsConstructor
 public class SchedulesCreateController {
@@ -61,7 +60,8 @@ public class SchedulesCreateController {
 	@RequestMapping(value = "/createSchedules", method = RequestMethod.POST)
 	// @RequestParam("name属性") String フィールドの変数名←格納先の変数名。入力したものを@requestparamに入れる
 
-	// Model modelを入れてのちにformの内容を画面に送られるように。RedirectAttributes redirectAttributesを入れる（フラッシュスコープを使うためのクラス）。
+	// Model modelを入れてのちにformの内容を画面に送られるように。RedirectAttributes
+	// redirectAttributesを入れる（フラッシュスコープを使うためのクラス）。
 	public String postMethod(@RequestParam("project_title") String str_project_title,
 			@RequestParam("place") String str_place, @RequestParam("vendor") String str_vendor,
 			@RequestParam("ordering_company") String str_ordering_company,
@@ -91,9 +91,7 @@ public class SchedulesCreateController {
 			@RequestParam("second_interview_password") String str_second_interview_password,
 			@RequestParam("second_interview_date") String str_second_interview_date,
 			@RequestParam("second_interview_time") String str_second_interview_time,
-			@RequestParam("supplement") String str_supplement, Model model,RedirectAttributes redirectAttributes) {
-
-
+			@RequestParam("supplement") String str_supplement, Model model, RedirectAttributes redirectAttributes) {
 
 		// HTMLから渡された値はすべてString型なので、DateやTimeなどの型を持つフィールド変数に格納する前に、いくつかの変数をStringからキャストする処理を行う
 
@@ -140,10 +138,13 @@ public class SchedulesCreateController {
 
 		// HTMLからもってきた値はTime型に格納できないので型を変換する Time.valueOf（変換するString変数）
 		// springMVCは勝手に未入力は空文字で送るが、time型は空文字拒否でNULLを受け入れるのでNULLを入れる作業が必要
+		// elseif文が無いとバリデーション適用後6文字のデータに再度:00をつけてしまうため注意
 		Time first_interview_scheduled_time = null;
-
+		
 		if (str_first_interview_scheduled_time.equals("")) {
 			first_interview_scheduled_time = null;
+		} else if (str_first_interview_scheduled_time.length() == 8) {
+			first_interview_scheduled_time = Time.valueOf(str_first_interview_scheduled_time);
 		} else {
 			first_interview_scheduled_time = Time.valueOf(str_first_interview_scheduled_time + ":00"); // Time型の桁数を追加しないと格納できないから文字列連結。
 		}
@@ -161,10 +162,13 @@ public class SchedulesCreateController {
 		}
 
 		// Time型に型変換 Time.valueOf（変換するString変数）とNULLを入れる処理
+		// elseif文が無いとバリデーション適用後6文字のデータに再度:00をつけてしまうため注意
 		Time first_interview_time = null;
-
+	
 		if (str_first_interview_time.equals("")) {
 			first_interview_time = null;
+		} else if (str_first_interview_time.length() == 8) {
+			first_interview_time = Time.valueOf(str_first_interview_time);
 		} else {
 			first_interview_time = Time.valueOf(str_first_interview_time + ":00"); // Time型の桁数を追加しないと格納できないから文字列連結。
 		}
@@ -179,10 +183,13 @@ public class SchedulesCreateController {
 		}
 
 		// Time型に型変換 Time.valueOf（変換するString変数）とNULLを入れる処理
+		// elseif文が無いとバリデーション適用後6文字のデータに再度:00をつけてしまうため注意
 		Time second_interview_scheduled_time = null;
-
+		
 		if (str_second_interview_scheduled_time.equals("")) {
 			second_interview_scheduled_time = null;
+		} else if (str_second_interview_scheduled_time.length() == 8) {
+			second_interview_scheduled_time = Time.valueOf(str_second_interview_scheduled_time);
 		} else {
 			second_interview_scheduled_time = Time.valueOf(str_second_interview_scheduled_time + ":00"); // Time型の桁数を追加しないと格納できないから文字列連結。
 		}
@@ -200,10 +207,13 @@ public class SchedulesCreateController {
 		}
 
 		// Time型に型変換 Time.valueOf（変換するString変数）とNULLを入れる処理
+		// elseif文が無いとバリデーション適用後6文字のデータに再度:00をつけてしまうため注意
 		Time second_interview_time = null;
-
+		
 		if (str_second_interview_time.equals("")) {
 			second_interview_time = null;
+		} else if (str_second_interview_time.length() == 8) {
+			second_interview_time = Time.valueOf(str_second_interview_time);
 		} else {
 			second_interview_time = Time.valueOf(str_second_interview_time + ":00"); // Time型の桁数を追加しないと格納できないから文字列連結。
 		}
@@ -240,31 +250,30 @@ public class SchedulesCreateController {
 		scheduleForm.setSecond_interview_date(second_interview_date);// Dateにキャストしたもの入れる
 		scheduleForm.setSecond_interview_time(second_interview_time);// Timeにキャストしたもの入れる
 		scheduleForm.setSupplement(str_supplement);
-		
+
 		// 営業担当のプルダウン表示
-				List<EmployeeDto> salesList = scheduleRepository.getAllSalesEmployees();
-				model.addAttribute("salesList", salesList);// new.htmlの担当営業欄に渡す
+		List<EmployeeDto> salesList = scheduleRepository.getAllSalesEmployees();
+		model.addAttribute("salesList", salesList);// new.htmlの担当営業欄に渡す
 
 		// 入力値チェック
-		//ScheduleForm.javaに入った入力値を引数にScheduleValidator.javaのvalidateメソッドを呼び出す。
-		List<String> errors = ScheduleValidator.validate(scheduleForm);//errorsにはエラーメッセージが格納
+		// ScheduleForm.javaに入った入力値を引数にScheduleValidator.javaのvalidateメソッドを呼び出す。
+		List<String> errors = ScheduleValidator.validate(scheduleForm);// errorsにはエラーメッセージが格納
 
 		if (errors.size() > 0) {
 			model.addAttribute("errors", errors);// new.htmlにエラーメッセージを渡す
 			model.addAttribute("scheduleForm", scheduleForm);// new.htmlに登録フォームにユーザーが入力していた値を渡す(入力値保持)
 
-			return "/schedules/new";//エラーがあれば面談新規登録画面に戻す
+			return "/schedules/new";// エラーがあれば面談新規登録画面に戻す
 		} else {
 			// 登録メソッド呼び出し
 			scheduleService.insertScheduleData(scheduleForm);
 
-			//実際にはセッションに値が格納される。登録完了後index.htmlでメッセージを表示
+			// 実際にはセッションに値が格納される。登録完了後index.htmlでメッセージを表示
 			redirectAttributes.addFlashAttribute("flush", "登録が完了しました。");
-			//面談一覧画面(index.html)に遷移。リダイレクト
+			// 面談一覧画面(index.html)に遷移。リダイレクト
 			return "redirect:/schedules/index";
-			
+
 		}
 	}
-	
 
 }

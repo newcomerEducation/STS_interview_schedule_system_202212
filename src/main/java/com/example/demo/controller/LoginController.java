@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class LoginController {
 	private final LoginRepository loginRepository;
 	// ＜ログイン＞
-	@GetMapping("/login/login")
+	@GetMapping("/login")
 	public String displayLogin(Model model) {
 		return "login/login";
 	}
@@ -29,7 +29,7 @@ public class LoginController {
 		LoginDto loginCheck = logindata.get(0);
 		// データベースの社員番号とパスワードと入力された社員番号とパスワードの正誤を判定する
 		if (loginCheck.getEmployee_code().equals(str_employee_code) && loginCheck.getPassword().equals(pass_hash)) {
-			return "redirect:/employees/index/entrance";
+			return "redirect:/";
 		} else {
 			return "redirect:/login/login";
 		}
